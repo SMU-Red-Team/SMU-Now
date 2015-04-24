@@ -2,7 +2,12 @@
 <resources>
 
     <string name="app_name">SMUNow</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="choice">Select a page</string>
+	<string name = "EventsTitle">SMU Event Stream</string>
+	<string name = "TwitterTitle">SMU Twitter Feed</string>
+	<string name = "StreamButton">Events</string>
+	<string name = "TwitterButton">Tweets</string>
+	<string name = "save">SAVE</string>
+	<string name = "delete">DELETE</string>
 </resources>

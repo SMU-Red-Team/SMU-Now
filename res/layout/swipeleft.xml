@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#32CD32"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/ImageView7"
+        android:layout_width="78dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_tab_save_unselected" />
+    <ImageView
+        android:id="@+id/ImageView6"
+        android:layout_width="78dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_tab_save_unselected" />
+    <ImageView
+        android:id="@+id/ImageView5"
+        android:layout_width="78dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_tab_save_unselected" />
+    <ImageView
+        android:id="@+id/ImageView4"
+        android:layout_width="78dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_tab_save_unselected" />
+
+</LinearLayout>
