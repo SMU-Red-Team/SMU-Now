@@ -10,24 +10,28 @@
         android:layout_width="78dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:contentDescription="@string/desc"
         android:src="@drawable/ic_tab_save_unselected" />
     <ImageView
         android:id="@+id/ImageView6"
         android:layout_width="78dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:contentDescription="@string/desc"
         android:src="@drawable/ic_tab_save_unselected" />
     <ImageView
         android:id="@+id/ImageView5"
         android:layout_width="78dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:contentDescription="@string/desc"
         android:src="@drawable/ic_tab_save_unselected" />
     <ImageView
         android:id="@+id/ImageView4"
         android:layout_width="78dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:contentDescription="@string/desc"
         android:src="@drawable/ic_tab_save_unselected" />
 
 </LinearLayout>

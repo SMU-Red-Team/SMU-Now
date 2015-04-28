@@ -1,7 +1,5 @@
 package com.example.smunow;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +10,14 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 @SuppressWarnings("deprecation")
+
+//sets up all tabs for the main pages
 public class tabs extends TabActivity{
+	
 	private static final String TWITTER_SPEC = "Twitter";
 	private static final String STREAM_SPEC = "Events";
 	private static final String SAVED_SPEC = "Saved";
@@ -53,45 +53,47 @@ public class tabs extends TabActivity{
 		tabHost.addTab(twitterSpec); 
 		tabHost.addTab(savedSpec); 
 	}
+	
 	@Override
+	//when tabs not viewed, update the database
 	public void onPause(){
 		super.onPause();
 		new updateDB().execute();
 	}
-
+	
+	//asynchronous task which updates the database with saved events
 	private class updateDB extends AsyncTask<Void, Void, Void> {
-		private ArrayList<Event> deleted;
+		
 		private ArrayList<Event> saved;
 		private httpHandler parser;
+		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			
+			//gets data from the session
 			parser = s.getParser();
-			deleted = s.getDeleted();
-			saved = s.getSaved();
-
+			saved = s.getStaged();
 		}
+		
 		@Override
 		protected Void doInBackground(Void... screenNames) {
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			if(saved != null){
-				for (int i = 0; i < saved.size(); i++){
-					params.add(new BasicNameValuePair("userID", Integer.toString(s.getUid())));
-					params.add(new BasicNameValuePair("request","save event"));
-					params.add(new BasicNameValuePair("eventID", Integer.toString(saved.get(i).getID())));
-					parser.makeRequest("http://52.10.7.245/api.php", "POST", params);
-					params.clear();
-				}
+			
+			//creates parameters for posting saved events to the API
+			for (int i = 0; i < saved.size(); i++){
+				List<NameValuePair> params = new ArrayList<NameValuePair>();
+				params.add(new BasicNameValuePair("userID", Integer.toString(s.getUid())));
+				params.add(new BasicNameValuePair("request","save event"));
+				params.add(new BasicNameValuePair("eventID", Integer.toString(saved.get(i).getID())));
+				parser.makeRequest("http://52.10.7.245/api.php", "POST", params);
 			}
 			return null;
 		}
-
-		// onPostExecute convert the JSON results into a Twitter object (which is an Array list of tweets
+		
 		@Override
 		protected void onPostExecute(Void v) {
-			s.emptySaved();
-
+			//gets rid of staged so the events can't be saved twice
+			s.emptyStaged();
 		}
 	}
-
 }

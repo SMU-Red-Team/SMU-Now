@@ -28,65 +28,84 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 @SuppressWarnings("deprecation")
+
+//creates and manages the screen for tweets
 public class twitStream extends ListActivity{
+
 	private ListActivity activity;
 	final static String ScreenName = "smu";
 	final static String LOG_TAG = "rnc";
 	private ImageButton refresh;
 	private ListView lvname;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.secondary);
+
+		//sets up layout attributes
 		activity = this;
 		lvname = (ListView) findViewById(android.R.id.list);
 		refresh = (ImageButton) findViewById(R.id.refreshButton);
+
+		//downloads tweets from the twitter API
 		downloadTweets();
+
+		//waits for user to click refresh and get new tweets
 		refresh.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	downloadTweets();
-            }
-        });
+			public void onClick(View v) {
+
+				//redownloads all of the tweets
+				downloadTweets();
+			}
+		});
 	}
 	// download twitter timeline after first checking to see if there is a network connection
 	public void downloadTweets() {
 		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-		if (networkInfo != null && networkInfo.isConnected()) {
+		//only executes download if there is a connection to the internet
+		if (networkInfo != null && networkInfo.isConnected()){
 			new DownloadTwitterTask().execute(ScreenName);
-		} else {
-			Log.v(LOG_TAG, "No network connection available.");
 		}
+		else 
+			Toast.makeText(twitStream.this, "Could not connect to the internet", Toast.LENGTH_SHORT).show();
 	}
 
 	// Uses an AsyncTask to download a Twitter user's timeline
 	private class DownloadTwitterTask extends AsyncTask<String, Void, String> {
+
 		final static String CONSUMER_KEY = "JhqQ1QgW5LnQWxruMXPOFN96f";
 		final static String CONSUMER_SECRET = "fRcPtQ9QzJVnN30fC0eZVvMDQfCkA6FTPrKvfrH6pYESiLM1sc";
 		final static String TwitterTokenURL = "https://api.twitter.com/oauth2/token";
 		final static String TwitterStreamURL = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=";
 		private ProgressDialog pDialog;
+
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+
+			//lets the user know that the tweets are being loaded
 			pDialog = new ProgressDialog(twitStream.this);
 			pDialog.setMessage("Loading Tweets ...");
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();
 		}
+
 		@Override
 		protected String doInBackground(String... screenNames) {
 			String result = null;
 
+			//only gets results if there is a valid screenname
 			if (screenNames.length > 0) {
 				result = getTwitterStream(screenNames[0]);
 			}
@@ -98,7 +117,7 @@ public class twitStream extends ListActivity{
 		protected void onPostExecute(String result) {
 			pDialog.dismiss();
 			Twitter twits = jsonToTwitter(result);
-
+			
 			// lets write the results to the console as well
 			for (Tweet tweet : twits) {
 				Log.i(LOG_TAG, tweet.getText());

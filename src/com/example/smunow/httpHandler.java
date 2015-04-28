@@ -21,38 +21,41 @@ import org.json.JSONObject;
 import android.util.Log;
 
 @SuppressWarnings("deprecation")
+
+//Class to handle all post and get calls to API
 public class httpHandler {
+
 	static InputStream is = null;
 	static JSONObject jObj = null;
 	static String json = "";
+
 	public httpHandler(){
-		//doesnt do anything
+		//doesn't do anything
 	}
 	public String makeRequest(String URL, String method, List<NameValuePair> params){
 		try{
+
+			//determines which method of obtaining should be used
 			if(method == "POST"){
-				// request method is POST
-				// defaultHttpClient
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				HttpPost httpPost = new HttpPost(URL);
-				httpPost.setEntity(new UrlEncodedFormEntity(params));
 
+				//encodes the parameters and executes the call
+				httpPost.setEntity(new UrlEncodedFormEntity(params));
 				HttpResponse httpResponse = httpClient.execute(httpPost);
 				HttpEntity httpEntity = httpResponse.getEntity();
 				is = httpEntity.getContent();
-
 			}else if(method == "GET"){
-				// request method is GET
 				DefaultHttpClient httpClient = new DefaultHttpClient();
+
+				//formats the parameters into URL string, augments URL and executes call
 				String paramString = URLEncodedUtils.format(params, "utf-8");
 				URL += "?" + paramString;
 				HttpGet httpGet = new HttpGet(URL);
-
 				HttpResponse httpResponse = httpClient.execute(httpGet);
 				HttpEntity httpEntity = httpResponse.getEntity();
 				is = httpEntity.getContent();
 			}            
-
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {
@@ -61,18 +64,18 @@ public class httpHandler {
 			e.printStackTrace();
 		}
 		try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-            is.close();
-            json = sb.toString();
-        } catch (Exception e) {
-            Log.e("Buffer Error", "Error converting result " + e.toString());
-        }
-        return json;
 
+			//creates a string out of the returned string from the method
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+			StringBuilder sb = new StringBuilder();
+			String line = null;
+			while ((line = reader.readLine()) != null) 
+				sb.append(line + "\n");
+			is.close();
+			json = sb.toString();
+		} catch (Exception e) {
+			Log.e("Buffer Error", "Error converting result " + e.toString());
+		}
+		return json;
 	}
 }

@@ -21,13 +21,14 @@
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
 		    android:gravity="center"
-		    android:text="SMU Twitter"
+		    android:text="@string/TwitterTitle"
 		    android:textSize="25sp" />
 
         <ImageButton
             android:id="@+id/refreshButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:contentDescription="@string/desc"
             android:src="@drawable/ic_tab_refresh_unselected" />
 
     </LinearLayout>

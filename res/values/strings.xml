@@ -10,4 +10,11 @@
 	<string name = "TwitterButton">Tweets</string>
 	<string name = "save">SAVE</string>
 	<string name = "delete">DELETE</string>
+	<string name = "email">Email Address:</string>
+	<string name = "pass">Password:</string>
+	<string name = "login">Log In</string>
+	<string name = "confirm">Confirm Password</string>
+	<string name = "register">Register</string>
+	<string name = "logout">Log Out</string>
+	<string name = "desc">Description for the picture in an image of some kind</string>
 </resources>
