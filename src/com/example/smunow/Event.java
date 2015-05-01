@@ -4,18 +4,41 @@ package com.example.smunow;
 public class Event{
 	
 	private int ID, allDay;
-	private String name, description, start, time;
+	private String name, description, start, time, phone, email, building, room;
 	
 	//constructor takes in all relevant info for an event
-	public Event(int id, String name, String description, String start, String time, int allDay){
+	public Event(int id, String name, String description, String start, String time, int allDay, String phone, String email, String building, String room){
 		ID = id;
 		this.name = name;
 		this.description = description;
 		this.start = start;
 		this.time = time;
 		this.allDay= allDay;
+		this.phone = phone;
+		this.email = email;
+		this.building = building;
+		this.room = room;
 	}
 	
+	//gets the contact phone number
+	public String getPhone(){
+		return phone;
+	}
+	
+	//gets the contact email
+	public String getEmail(){
+		return email;
+	}
+	
+	//gets the building location
+	public String getBuilding(){
+		return building;
+	}
+	
+	//gets the room inside of a building
+	public String getRoom(){
+		return room;
+	}
 	//gets the event ID
 	public int getID() {
 		return ID;

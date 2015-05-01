@@ -13,9 +13,13 @@ import com.wdullaer.swipeactionadapter.SwipeActionAdapter;
 import com.wdullaer.swipeactionadapter.SwipeDirections;
 import com.wdullaer.swipeactionadapter.SwipeActionAdapter.SwipeActionListener;
 
+import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -61,7 +65,7 @@ public class SavedList extends ListActivity{
 			mAdapter.addBackground(SwipeDirections.DIRECTION_NORMAL_RIGHT,R.layout.swiperight);
 
 			//gets all of the users saved events
-			new DownloadSaved().execute();
+			download();
 
 			//waits for the user to log out to change screens
 			logout.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +81,9 @@ public class SavedList extends ListActivity{
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 
 					//prints out the events description to the screen
-					Toast.makeText(getBaseContext(),events.get(arg2).getDescription(), Toast.LENGTH_LONG).show();
+					String toastable = "Building: " + events.get(arg2).getBuilding() + "\n\nRoom: "+ events.get(arg2).getRoom() + "\n\nContact Email: "+events.get(arg2).getEmail() + "\n\nContact Phone: " + events.get(arg2).getPhone() + "\n\nDescription: " + events.get(arg2).getDescription();
+					DialogFragment daLog = new descriptionDialog(toastable);
+					daLog.show(getFragmentManager(), "stuff");
 				}
 			});
 
@@ -161,7 +167,31 @@ public class SavedList extends ListActivity{
 	//updates the database when screen isn't being viewed
 	protected void onPause(){
 		super.onPause();
-		new updateDB().execute();
+		upload();
+	}
+	
+	public void upload() {
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+		//only executes download if there is a connection to the internet
+		if (networkInfo != null && networkInfo.isConnected()){
+			new updateDB().execute();
+		}
+		else 
+			Toast.makeText(SavedList.this, "Could not connect to the internet", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void download() {
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+		//only executes download if there is a connection to the internet
+		if (networkInfo != null && networkInfo.isConnected()){
+			new DownloadSaved().execute();
+		}
+		else 
+			Toast.makeText(SavedList.this, "Could not connect to the internet", Toast.LENGTH_SHORT).show();
 	}
 
 	//asynchronous class to download the users saved events
@@ -204,7 +234,7 @@ public class SavedList extends ListActivity{
 			for(int i = 0; i < jArr.length();i++){
 				try {
 					jObj = new JSONObject(jArr.getString(i));
-					events.add(new Event(jObj.getInt("eventID"),jObj.getString("name"),jObj.getString("description"),jObj.getString("startDate"),jObj.getString("startTime"), jObj.getInt("allDay")));
+					events.add(new Event(jObj.getInt("eventID"),jObj.getString("name"),jObj.getString("description"),jObj.getString("startDate"),jObj.getString("startTime"), jObj.getInt("allDay"), jObj.getString("phone"), jObj.getString("email"), jObj.getString("building"), jObj.getString("room")));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

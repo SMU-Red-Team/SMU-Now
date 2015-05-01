@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="InflateParams">
+        <ignore path="src/com/example/smunow/logintab.java" />
+        <ignore path="src/com/example/smunow/tabs.java" />
+    </issue>
+    <issue id="NewApi">
+        <ignore path="src/com/example/smunow/tabs.java" />
+    </issue>
+</lint>

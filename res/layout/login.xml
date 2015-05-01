@@ -2,29 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/nowbackground"
     android:orientation="vertical" >
 
     <EditText
         android:id="@+id/emailGetter"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:typeface="serif" />
 
     <EditText
         android:id="@+id/passwordGetter"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/pass"
         android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/loginButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login"
-        android:textSize="25sp" />
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:textSize="25sp"
+            android:typeface="serif" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -11,9 +11,14 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +43,8 @@ public class Login extends Activity{
 		login = (Button)findViewById(R.id.loginButton);
 		email = (EditText)findViewById(R.id.emailGetter);
 		password = (EditText)findViewById(R.id.passwordGetter);
+		password.setTypeface(Typeface.SERIF);
+		password.setTransformationMethod(new PasswordTransformationMethod());
 		
 		//waits for login button to be pressed
 		login.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +66,17 @@ public class Login extends Activity{
 
 	}
 	
+	public void authenticated() {
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+		//only executes download if there is a connection to the internet
+		if (networkInfo != null && networkInfo.isConnected()){
+			new authenticate().execute();
+		}
+		else 
+			Toast.makeText(Login.this, "Could not connect to the internet", Toast.LENGTH_SHORT).show();
+	}
 	//class authenticates the users login information asynchronously
 	class authenticate extends AsyncTask<Void, Void, Void> {
 		private httpHandler jParse;

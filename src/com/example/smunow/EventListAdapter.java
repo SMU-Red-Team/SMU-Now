@@ -43,6 +43,7 @@ public class EventListAdapter extends ArrayAdapter<Event>{
 			holder = new ViewHolder();
 			holder.textView1 = (TextView)row.findViewById(R.id.eventName);
 			holder.textView2 = (TextView)row.findViewById(R.id.eventTime);
+			holder.textView3 = (TextView)row.findViewById(R.id.eventDate);
 			row.setTag(holder);
 		}
 		else
@@ -52,7 +53,7 @@ public class EventListAdapter extends ArrayAdapter<Event>{
 		
 		//sets the event name in the ListView
 		holder.textView1.setText(Events.get(position).toString());
-		
+		holder.textView3.setText(Events.get(position).getStart());
 		//determines if the event is all day or not and assigns a time or ALL DAY
 		if (!Events.get(position).allDay())
 			holder.textView2.setText(Events.get(position).getTime());
@@ -67,5 +68,6 @@ public class EventListAdapter extends ArrayAdapter<Event>{
 	{
 		TextView textView1;
 		TextView textView2;
+		TextView textView3;
 	}
 }

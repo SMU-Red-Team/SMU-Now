@@ -11,9 +11,14 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +44,11 @@ public class Register extends Activity{
 		register = (Button)findViewById(R.id.register);
 		email = (EditText)findViewById(R.id.email);
 		password = (EditText)findViewById(R.id.password);
+		password.setTypeface(Typeface.SERIF);
+		password.setTransformationMethod(new PasswordTransformationMethod());
 		confirm = (EditText)findViewById(R.id.confirm);
+		confirm.setTypeface(Typeface.SERIF);
+		confirm.setTransformationMethod(new PasswordTransformationMethod());
 
 		//waits for the register button to be clicked
 		register.setOnClickListener(new View.OnClickListener() {
@@ -51,12 +60,24 @@ public class Register extends Activity{
 				else{
 					pass = password.getText().toString();
 					e = email.getText().toString();
-					new register().execute();
+					s.destroySession();
+					s = Session.getSession();
+					registered();
 				}
 			}
 		});
 	}
+	public void registered() {
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
+		//only executes download if there is a connection to the internet
+		if (networkInfo != null && networkInfo.isConnected()){
+			new register().execute();
+		}
+		else 
+			Toast.makeText(Register.this, "Could not connect to the internet", Toast.LENGTH_SHORT).show();
+	}
 	//asynchronous task used to create a user account
 	class register extends AsyncTask<Void, Void, Void> {
 

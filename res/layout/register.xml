@@ -2,35 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/nowbackground"
     android:orientation="vertical" >
-     <EditText
+
+    <EditText
         android:id="@+id/email"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:typeface="serif" />
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/pass"
         android:inputType="textPassword" />
+
     <EditText
         android:id="@+id/confirm"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/confirm"
         android:inputType="textPassword" />
 
-     <Button
-         android:id="@+id/register"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:text="@string/register"
-         android:textSize="25sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:textSize="25sp"
+            android:typeface="serif" />
+
+    </LinearLayout>
 
 </LinearLayout>

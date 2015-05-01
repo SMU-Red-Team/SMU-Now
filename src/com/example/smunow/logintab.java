@@ -3,6 +3,8 @@ package com.example.smunow;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
@@ -21,18 +23,20 @@ public class logintab extends TabActivity{
 		
 		//creates login tab
 		TabSpec loginSpec = tabHost.newTabSpec(LOGIN_SPEC);
-		loginSpec.setIndicator(LOGIN_SPEC);
+		View loginView = LayoutInflater.from(logintab.this).inflate(R.layout.logintab, null);
+		loginSpec.setIndicator(loginView);
 		Intent loginIntent = new Intent(logintab.this, Login.class);
 		loginSpec.setContent(loginIntent);
 		
 		//creates Register tab
 		TabSpec registerSpec = tabHost.newTabSpec(REGISTER_SPEC);
-		registerSpec.setIndicator(REGISTER_SPEC);
+		View registerView = LayoutInflater.from(logintab.this).inflate(R.layout.registertab, null);
+		registerSpec.setIndicator(registerView);
 		Intent registerIntent = new Intent(logintab.this, Register.class);
 		registerSpec.setContent(registerIntent);
 
 		// Adding tabs to view
 		tabHost.addTab(loginSpec); 
-		tabHost.addTab(registerSpec); 
+		tabHost.addTab(registerSpec);
 	}
 }

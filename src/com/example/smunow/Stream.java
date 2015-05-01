@@ -14,8 +14,12 @@ import com.wdullaer.swipeactionadapter.SwipeActionAdapter.SwipeActionListener;
 import com.wdullaer.swipeactionadapter.SwipeDirections;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -52,7 +56,7 @@ public class Stream extends Activity{
 		.addBackground(SwipeDirections.DIRECTION_NORMAL_RIGHT,R.layout.swiperight);
 
 		//downloads all events for the events tab
-		new downloadStream().execute();
+		download();
 
 		//waits for a list event to be clicked
 		lvName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -60,7 +64,9 @@ public class Stream extends Activity{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
 				//displays the description of the specific event to the user
-				Toast.makeText(getBaseContext(),events.get(arg2).getDescription(), Toast.LENGTH_LONG).show();
+				String toastable = "Building: " + events.get(arg2).getBuilding() + "\n\nRoom: "+ events.get(arg2).getRoom() + "\n\nContact Email: "+events.get(arg2).getEmail() + "\n\nContact Phone: " + events.get(arg2).getPhone() + "\n\nDescription: " + events.get(arg2).getDescription();
+				DialogFragment daLog = new descriptionDialog(toastable);
+				daLog.show(getFragmentManager(), "stuff");
 			}
 		});
 
@@ -138,9 +144,32 @@ public class Stream extends Activity{
 	//when activity is out of view, update database
 	protected void onPause(){
 		super.onPause();
-		new updateDB().execute();
+		upload();
 	}
+	
+	public void upload() {
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
+		//only executes download if there is a connection to the internet
+		if (networkInfo != null && networkInfo.isConnected()){
+			new updateDB().execute();
+		}
+		else 
+			Toast.makeText(Stream.this, "Could not connect to the internet", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void download() {
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+		//only executes download if there is a connection to the internet
+		if (networkInfo != null && networkInfo.isConnected()){
+			new downloadStream().execute();
+		}
+		else 
+			Toast.makeText(Stream.this, "Could not connect to the internet", Toast.LENGTH_SHORT).show();
+	}
 	//Asynchronous thread to download a stream of events
 	private class downloadStream extends AsyncTask<Void, Void, Void> {
 
@@ -174,7 +203,7 @@ public class Stream extends Activity{
 
 			//executes post 
 			String json = parser.makeRequest("http://52.10.7.245/api.php", "POST", params);
-
+			
 			//attempts to parse the response
 			JSONArray jArr = null;
 			try {
@@ -190,7 +219,7 @@ public class Stream extends Activity{
 
 					//creates an object to get the event info and make an object
 					jObj = new JSONObject(jArr.getString(i));
-					events.add(new Event(jObj.getInt("eventID"),jObj.getString("name"),jObj.getString("description"),jObj.getString("startDate"),jObj.getString("startTime"), jObj.getInt("allDay")));
+					events.add(new Event(jObj.getInt("eventID"),jObj.getString("name"),jObj.getString("description"),jObj.getString("startDate"),jObj.getString("startTime"), jObj.getInt("allDay"), jObj.getString("phone"), jObj.getString("email"), jObj.getString("building"), jObj.getString("room")));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
