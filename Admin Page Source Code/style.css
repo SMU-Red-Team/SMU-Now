@@ -1,0 +1,50 @@
+body{
+   background-image:url("background.jpg");
+}
+#main{
+  
+   margin-left:auto;
+   margin-right:auto;
+   width: 70%;
+   height:1000px;
+   text-align: center;
+}
+.divStyle{
+   background-color:white;
+   border-style:solid;
+   width: 200px;
+   padding: 10px;
+   margin: 5px;
+   float:left; 
+}
+form{
+   font-size:20px;
+}
+
+h3{
+   margin-top:-5px;
+   text-align:center;
+}
+h1,a{
+   color:white;
+   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+   text-decoration: none;
+}
+h1{
+   font-size: 40px;
+}
+#addUser{
+   margin-left:310px;
+}
+#SMUNow{
+   margin-top:100px;
+}
+#loginForm{
+   color:white;
+   font-size: 30px;
+   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+.loginBox{
+   height:20px;
+   font-size: 20px;
+}
